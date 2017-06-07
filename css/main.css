@@ -13,3 +13,57 @@ html, body {
 #map-canvas { 
 	height: 100%; 
 }
+
+/* ===== Search Venues ===== */
+.search-container {
+	position: absolute;
+	z-index: 1;
+	left: 30px; 
+	top: 25px;
+	width: 100%;
+}
+
+.search-venues {
+	position: relative;
+	top: 2px;
+	font-size: 18px;
+	padding: 7px 12px;
+	background-color: #464a4c; 
+	color: #fff; 
+	height: 38px;
+}
+
+.search-input { 
+	box-shadow: 0 2px 6px rgba(0,0,0,0.3); 
+	font-size: 16px;
+	padding: 5px 10px;
+	width: 20%;
+	height: 38px;
+}
+
+/* ===== Media ===== */
+@media screen and (max-width: 1024px) {
+	.search-venues { font-size: 20px;}
+	.search-input { width: 40%; font-size: 20px;}
+}
+
+@media screen and (max-width: 768px) {
+	.search-input { width: 50%; }
+}
+
+
+@media screen and (max-width: 440px) {
+	.search-container { text-align: center; margin: 0; position: absolute; z-index: 1; left: 0px; }
+	.search-input { width: 70%; margin-bottom: 10px; }
+	#submit-button { display: inline-block; text-align: center; }
+}
+
+
+@media screen and (max-width: 240px) {
+	.search-venues { display: none;}
+	.search-input { width: 70%; margin-bottom: 10px; }
+	#submit-button { display: inline-block; text-align: center; }
+}
+
+
+
