@@ -1,4 +1,3 @@
-	
 // Create a new blank for all the listing markers in global scope
 var markers = [];
 
@@ -27,13 +26,14 @@ function initMap() {
         position: {lat: 54.596724, lng: -5.930082}
     });
 
+    document.getElementById('submit-button').addEventListener("click", searchVenuesQuery);
 }
 
 function searchVenuesQuery() {
 
 	var venueStr = $('#search-venues').val();
 
-	var fourSquareUrl = "https://api.foursquare.com/v2/venues/search?";
+	var fourSquareUrl = "https://api.foursquare.com/v2/venues/explore?";
 	var fourSquareID = "client_id=4KRRWLQG1VJMY1GNF2CSWXNSPU5XRED3CFUACY4TOHZ53XOA&client_secret=LP11UFHMDQFYNYMYO42S4BD414ZJJQLMVK2OPNIEF0KIXEIJ&v=20170604";
 	var limitSearch = 15;
 	var fullUrl = fourSquareUrl + fourSquareID + "&near=belfast" + "&limit=" + limitSearch + "&query=" + venueStr;
@@ -45,17 +45,19 @@ function searchVenuesQuery() {
 		success: function(data) {
 
 			// Can be find after ajax successfully called the URL in the GoogleDevTol in Network section (FourSquare API)
-			var locationMarkers = data.response.venues;
+			var fourSquareData = data.response.groups[0].items;
+
+			console.log(fourSquareData);
 
 			clearOverlays();
 
-			for(var i = 0; i < locationMarkers.length; i++) {
+			for(var i = 0; i < fourSquareData.length; i++) {
 				// Get the lat position from the FourSquare API
-				var lat = locationMarkers[i].location.lat;
+				var lat = fourSquareData[i].venue.location.lat;
 				// Get the lng position from the FourSquare SPI
-				var lng = locationMarkers[i].location.lng;
+				var lng = fourSquareData[i].venue.location.lng;
 				// Get the place name from the FourSquare API
-				var name = locationMarkers[i].name;
+				var name = fourSquareData[i].venue.name;
 
 				var marker = new google.maps.Marker({
 					position: new google.maps.LatLng(lat, lng),
