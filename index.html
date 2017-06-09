@@ -20,9 +20,9 @@
   <!-- Google Maps -->
   <div id="map-canvas"></div>
   <div class="search-container">
-    <span class="search-venues">Find</span>
-    <input type="search" placeholder="I'm looking for Restaurants, Hotels & Bars" id="search-venues" class="search-input" maxlength="15"> 
-    <button id="submit-button" type="button" class="btn btn-primary">Submit</button>
+    <span class="search-text">Find</span>
+    <input type="text" placeholder="I'm looking for Restaurants, Hotels & Bars" id="search-venues" class="search-input" maxlength="25"> 
+    <button onclick="searchVenuesQuery()" id="submit-button" type="button" class="btn btn-primary">Submit</button>
   </div>
 
   <!-- Load the Google Maps API-->
