@@ -23,7 +23,7 @@ html, body {
 	width: 100%;
 }
 
-.search-venues {
+.search-text {
 	position: relative;
 	top: 2px;
 	font-size: 18px;
@@ -43,7 +43,7 @@ html, body {
 
 /* ===== Media ===== */
 @media screen and (max-width: 1024px) {
-	.search-venues { font-size: 20px;}
+	.search-text { font-size: 20px;}
 	.search-input { width: 40%; font-size: 20px;}
 }
 
@@ -60,7 +60,7 @@ html, body {
 
 
 @media screen and (max-width: 240px) {
-	.search-venues { display: none;}
+	.search-text { display: none;}
 	.search-input { width: 70%; margin-bottom: 10px; }
 	#submit-button { display: inline-block; text-align: center; }
 }
