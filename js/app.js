@@ -27,6 +27,7 @@ function initMap() {
     });
 
     document.getElementById('submit-button').addEventListener("click", searchVenuesQuery);
+
 }
 
 function searchVenuesQuery() {
@@ -47,11 +48,13 @@ function searchVenuesQuery() {
 			// Can be find after ajax successfully called the URL in the GoogleDevTol in Network section (FourSquare API)
 			var fourSquareData = data.response.groups[0].items;
 
-			console.log(fourSquareData);
-
+			// This will clear all the markers on the map
 			clearOverlays();
 
-			for(var i = 0; i < fourSquareData.length; i++) {
+			// Create an infowindow variable
+    		var largeInfoWindow = new google.maps.InfoWindow();
+
+			for (var i = 0; i < fourSquareData.length; i++) {
 				// Get the lat position from the FourSquare API
 				var lat = fourSquareData[i].venue.location.lat;
 				// Get the lng position from the FourSquare SPI
@@ -68,11 +71,14 @@ function searchVenuesQuery() {
 
 				// Push the marker to our array of markers
           		markers.push(marker);
-			}
-
+          		  // Create an onclick event to open an infowindow at each marker.
+          		marker.addListener('click', function() {
+    				createInfoWindows(this, largeInfoWindow);
+    			});
+			} // End for loop
 		}
 
-	});
+	}); // End of Ajax
 
 	return false;
 
@@ -84,6 +90,20 @@ function searchVenuesQuery() {
 	    // Resets the markers array
 	    markers = [];
  	} 
+}
+
+ // This function is to create the infowindow when the marker is clicked. We'll only allow one infowindow which will open at the marker that is clicked
+function createInfoWindows(marker, infowindow) {
+	 // Check to make sure the infowindow is not already opened on this marker.
+	if (infowindow.marker != marker) {
+		infowindow.setContent('<div>' + marker.title + '</div>');
+		infowindow.marker = marker;
+		infowindow.open(map, marker);
+		 // Make sure the marker property is cleared if the infowindow is closed.
+		infowindow.addListener('closeclick', function() {
+			infowindow.marker = null;
+		});
+	}
 }
 
 // Initialize the map
