@@ -57,9 +57,9 @@ var AppViewModel = function() {
 				// Get the lat position from the FourSquare API
 				var lat = fourSquareData[i].venue.location.lat;
 				// Get the lng position from the FourSquare SPI
-				var lng = fourSquareData[i].venue.location.lng;
-				
-				// Marker with name, address, rating & price
+				var lng = fourSquareData[i].venue.location.lng
+
+				// Marker with name, address, phone, rating, url & categories
 				var marker = new google.maps.Marker({
 					position: new google.maps.LatLng(lat, lng),
 					name: name,
@@ -73,6 +73,7 @@ var AppViewModel = function() {
 					animation: google.maps.Animation.DROP
 				});
 
+				
 				// Push the marker to our array of markers
           		markers.push(marker);
 
@@ -95,7 +96,7 @@ var AppViewModel = function() {
 	}
 
 
-	// This function creates the infowindow when the marker is clicked. We'll only allow
+	// This function creates the infowindow when the individual marker is clicked. 
 	function setVenueInfoWindow(marker, infowindow) {
 
 		var contentString = '<div class="venue-infowindow">' + '<div class="venueName">' + marker.name 
@@ -106,17 +107,41 @@ var AppViewModel = function() {
 																   + '<div class="venueAddress">' + marker.address + '</div>'
 																   + '<div class="venueUrl">' + marker.url + '</div>'
 																   + '</div>';
-
+		// Check to make sure the infowindow is not already opened on this marker.														   
 		if(infowindow.marker != marker) {
 			infowindow.marker = marker;
 			infowindow.setContent(contentString);
 			infowindow.open(map, marker);
+			// Make sure the marker property is cleared if the infowindow is closed
 			infowindow.addListener('closeclick', function() {
 				infowindow.setMarker = null;
 			});
 		}
 
+		// Will handle all the marker data errors
+		handleVenueDataError(marker);
+
 	}
+
+	// This function will handle undefined data and reformatting the htmlString
+	function handleVenueDataError(marker) {
+		if(!marker.url) {
+			$('.venueUrl').replaceWith("Website Not Available");
+		}
+
+		if(!marker.phone) {
+			$('.venuePhone').replaceWith("Phone Not Available");
+		}
+
+		if(!marker.price) {
+			$('.venuePrice').replaceWith("Price Not Available");
+		}
+
+		if(!marker.rating) {
+			$('.venueRating').replaceWith("0.0");
+		}
+	}
+
 
 	// This will clear all the markers on the map
 	function clearMarkers() {
