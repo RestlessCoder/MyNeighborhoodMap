@@ -77,6 +77,7 @@ var AppViewModel = function() {
           		// Create an onclick event to open an infowindow at each marker.
 		        marker.addListener('click', function() {
 		            setVenueInfoWindow(this, infoWindow);
+		            toggleBounce(this);
 		        });
 
 				// set bounds according to suggestedBounds from foursquare data response
@@ -124,6 +125,7 @@ var AppViewModel = function() {
 
 	// This function will handle undefined data and reformatting the htmlString
 	function handleVenueDataError(marker) {
+
 		if(!marker.url) {
 			$('.venueUrl').replaceWith("Website Not Available");
 		}
@@ -137,8 +139,18 @@ var AppViewModel = function() {
 		}
 	}
 
+	// This function will make the marker bounce when you click on them
+	function toggleBounce(marker) {
 
-	// This will clear all the markers on the map
+       	if (marker.getAnimation() != null) {
+            marker.setAnimation(null);
+        } else {
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function(){ marker.setAnimation(null); }, 2000);
+        }
+    }
+        
+	// This function will clear all the markers on the map
 	function clearMarkers() {
 	for (var i = 0; i < markers.length; i++ ) {
 	      markers[i].setMap(null);
