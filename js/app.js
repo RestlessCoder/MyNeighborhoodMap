@@ -9,7 +9,6 @@ var VenueModel = function(data) {
 	this.url = ko.observable(data.venue.url);
 	this.rating = ko.observable(data.venue.rating);
 	this.categories = ko.observable(data.venue.categories[0].name);
-	this.price = ko.observable(data.venue.price.currency);
 }
 
 /* ========= ViewModel ========= */
@@ -30,7 +29,7 @@ var AppViewModel = function() {
 
 		var fourSquareUrl = "https://api.foursquare.com/v2/venues/explore?";
 		var fourSquareID = "client_id=4KRRWLQG1VJMY1GNF2CSWXNSPU5XRED3CFUACY4TOHZ53XOA&client_secret=LP11UFHMDQFYNYMYO42S4BD414ZJJQLMVK2OPNIEF0KIXEIJ&v=20170604";
-		var limitSearch = "&limit=" + 15;
+		var limitSearch = "&limit=" + 20;
 		var location = "&near=belfast";
 		var radius = "&radius=" + 600;
 		// This will query the venues from the input 
@@ -53,7 +52,6 @@ var AppViewModel = function() {
 				var url = fourSquareData[i].venue.url;
 				var rating = fourSquareData[i].venue.rating;
 				var categories = fourSquareData[i].venue.categories[0].name;
-				var price = fourSquareData[i].venue.price.currency;
 				// Get the lat position from the FourSquare API
 				var lat = fourSquareData[i].venue.location.lat;
 				// Get the lng position from the FourSquare SPI
@@ -67,7 +65,6 @@ var AppViewModel = function() {
 					phone: formattedPhone,
 					address: formattedAddress,
 					rating: rating,
-					price : price,
 					url: url,
 					map: map,
 					animation: google.maps.Animation.DROP
@@ -92,6 +89,9 @@ var AppViewModel = function() {
 				}
 			} // End for loop
 
+		}).error(function(e) {
+			infoWindow.setContent('<div class="error-infowindow">FourSquare Data Not Available. Please try to refresh the page</div>');
+			$('.fourSquareData-Error').text("Failed to load FourSquareData. Please try to refresh the page");
 		});
 	}
 
@@ -102,7 +102,6 @@ var AppViewModel = function() {
 		var contentString = '<div class="venue-infowindow">' + '<div class="venueName">' + marker.name 
 																   + '<span class="venueRating">' + marker.rating + '</span></div>'
 																   + '<div class="venueCategories">' + marker.categories 
-																   + '<span class="venuePrice">' + marker.price + '</span></div>'
 																   + '<div class="venuePhone">' + marker.phone + '</div>'
 																   + '<div class="venueAddress">' + marker.address + '</div>'
 																   + '<div class="venueUrl">' + marker.url + '</div>'
@@ -131,10 +130,6 @@ var AppViewModel = function() {
 
 		if(!marker.phone) {
 			$('.venuePhone').replaceWith("Phone Not Available");
-		}
-
-		if(!marker.price) {
-			$('.venuePrice').replaceWith("Price Not Available");
 		}
 
 		if(!marker.rating) {
