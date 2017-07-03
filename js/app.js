@@ -21,6 +21,13 @@ var AppViewModel = function() {
 
 	var infoWindow = new google.maps.InfoWindow();
 
+    // Style the markers a bit. This will be our listing marker icon.
+    var defaultIcon = makeMarkerIcon('0091ff');
+
+    // Create a "highlighted location" marker color for when the user
+    // mouses over the marker.
+    var highlightedIcon = makeMarkerIcon('FFFF24');
+
 	// Initially blank input
 	self.exploreInputSearch = ko.observable('Sushi'); 
 
@@ -59,6 +66,7 @@ var AppViewModel = function() {
 
 				// Marker with name, address, phone, rating, url & categories
 				var marker = new google.maps.Marker({
+					icon: defaultIcon,
 					position: new google.maps.LatLng(lat, lng),
 					name: name,
 					categories : categories,
@@ -79,6 +87,16 @@ var AppViewModel = function() {
 		            setVenueInfoWindow(this, infoWindow);
 		            toggleBounce(this);
 		        });
+
+		        // Two event listeners - one for mouseover, one for mouseout,
+         		 // to change the colors back and forth.
+		        marker.addListener('mouseover', function() {
+		        	this.setIcon(highlightedIcon);
+		        });
+
+          		marker.addListener('mouseout', function() {
+            		this.setIcon(defaultIcon);
+          		});
 
 				// set bounds according to suggestedBounds from foursquare data response
 				var suggestedBounds = data.response.suggestedBounds;
@@ -152,12 +170,28 @@ var AppViewModel = function() {
         
 	// This function will clear all the markers on the map
 	function clearMarkers() {
-	for (var i = 0; i < markers.length; i++ ) {
-	      markers[i].setMap(null);
+		for (var i = 0; i < markers.length; i++ ) {
+	     	 markers[i].setMap(null);
 	    }
 	    // Resets the markers array
 	    markers = [];
  	} 
+
+ 	// This function takes in a COLOR, and then creates a new marker
+    // icon of that color. The icon will be 21 px wide by 34 high, have an origin
+    // of 0, 0 and be anchored at 10, 34).
+    function makeMarkerIcon(markerColor) {
+        var markerImage = new google.maps.MarkerImage(
+       	  'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+          	'|40|_|%E2%80%A2',
+       	  new google.maps.Size(21, 34),
+          new google.maps.Point(0, 0),
+       	  new google.maps.Point(10, 34),
+          new google.maps.Size(21,34));
+        
+        return markerImage;
+    
+    }
 
 }	// End of AppViewModel
 
