@@ -21,12 +21,12 @@
   <!-- Google Maps -->
   <div id="googleMap-Error"></div>
   <div id="map-canvas"></div>
-  <div class="search-container">
+  <form data-bind="submit: searchVenueLocations" class="search-container">
     <span class="search-text">Find</span>
     <input data-bind="value: exploreInputSearch" type="text" placeholder="I'm looking for Restaurants, Hotels & Bars" id="search-venues" class="search-input" maxlength="25"> 
-    <button data-bind="submit: searchVenueLocations" id="submit-button" type="submit" class="btn btn-primary">Submit</button>
+    <button id="submit-button" type="submit" class="btn btn-primary">Submit</button>
     <p class="fourSquareData-Error"></p>
-  </div>
+  </form>
   <div class="showList-btn-container">
     <h4 class="city-text">Belfast, United Kingdom</h4>
     <button data-bind="click: toggleList" class="btn btn-secondary btn-md" id="showList-button"><span data-bind="css: {'icon-plus': displayVenuesList(), 'icon-minus': !displayVenuesList()}"></span></button>
