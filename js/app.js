@@ -94,6 +94,9 @@ var AppViewModel = function() {
 		        marker.addListener('click', function() {
 		            setVenueInfoWindow(this, infoWindow);
 		            toggleBounce(this);
+		            // When click on the marker, it will re-center on the marker
+		            map.setCenter(this.getPosition());
+		            map.setZoom(14);
 		        });
 
 		        // Two event listeners - one for mouseover, one for mouseout,
