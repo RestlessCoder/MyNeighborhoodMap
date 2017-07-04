@@ -21,12 +21,18 @@ var AppViewModel = function() {
 
 	var infoWindow = new google.maps.InfoWindow();
 
+	// Creates an observable array to find various locations.
+    self.locationList = ko.observableArray([]);
+
+    // Boolean value for displaying venues list of location
+    self.displayVenuesList = ko.observable('false');
+
     // Style the markers a bit. This will be our listing marker icon.
-    var defaultIcon = makeMarkerIcon('0091ff');
+    var defaultIcon = makeMarkerIcon('F62217');
 
     // Create a "highlighted location" marker color for when the user
     // mouses over the marker.
-    var highlightedIcon = makeMarkerIcon('FFFF24');
+    var highlightedIcon = makeMarkerIcon('0091ff');
 
 	// Initially blank input
 	self.exploreInputSearch = ko.observable('Sushi'); 
@@ -43,7 +49,7 @@ var AppViewModel = function() {
 		var query = "&query=" + self.exploreInputSearch();
 
 		var fullUrl = fourSquareUrl + fourSquareID + location + limitSearch + radius + query;
-		
+
 		clearMarkers();
 
 		//Retrieves JSON data from the FourSqaure API.
@@ -64,6 +70,9 @@ var AppViewModel = function() {
 				// Get the lng position from the FourSquare SPI
 				var lng = fourSquareData[i].venue.location.lng
 
+				// Loop through the fourSquareData[i] & add the venue model value in an array and notifies observers
+				self.locationList.push(new VenueModel(fourSquareData[i]));
+
 				// Marker with name, address, phone, rating, url & categories
 				var marker = new google.maps.Marker({
 					icon: defaultIcon,
@@ -78,7 +87,6 @@ var AppViewModel = function() {
 					animation: google.maps.Animation.DROP
 				});
 
-				
 				// Push the marker to our array of markers
           		markers.push(marker);
 
@@ -89,7 +97,7 @@ var AppViewModel = function() {
 		        });
 
 		        // Two event listeners - one for mouseover, one for mouseout,
-         		 // to change the colors back and forth.
+         		// to change the colors back and forth.
 		        marker.addListener('mouseover', function() {
 		        	this.setIcon(highlightedIcon);
 		        });
@@ -141,6 +149,11 @@ var AppViewModel = function() {
 
 	}
 
+	// Update function for venues list display
+	self.toggleList = function() {
+        self.displayVenuesList(!self.displayVenuesList());
+    };
+
 	// This function will handle undefined data and reformatting the htmlString
 	function handleVenueDataError(marker) {
 
@@ -171,7 +184,8 @@ var AppViewModel = function() {
 	// This function will clear all the markers on the map
 	function clearMarkers() {
 		for (var i = 0; i < markers.length; i++ ) {
-	     	 markers[i].setMap(null);
+	     	markers[i].setMap(null);
+
 	    }
 	    // Resets the markers array
 	    markers = [];

@@ -18,7 +18,7 @@ html, body {
 /* ===== Search Venues ===== */
 .search-container {
 	position: absolute;
-	z-index: 1;
+	z-index: 2;
 	left: 30px; 
 	top: 25px;
 	width: 100%;
@@ -42,14 +42,57 @@ html, body {
 	height: 38px;
 }
 
+/* ===== Show Lists ===== */
+.showList-btn-container {
+	background-color: #FFF;
+	position: absolute;
+	z-index: 1;
+	left: 30px; 
+	top: 80px;
+	width: 25%;
+	height: 80px;
+	padding: 10px;
+
+}
+
+.city-text { 
+	display: inline;
+	font-size: 1.25em;
+
+}
+
+#showList-button {
+	position: absolute;
+	right: 0;
+	margin-right: 10px;
+
+}
+
+.showList-container {
+	background-color: #FFF;
+	position: absolute;
+	z-index: 1;
+	left: 30px; 
+	top: 80px;
+	width: 25%;
+	height: 80px;
+	padding: 10px;
+
+}
+
 /* ===== Media ===== */
 @media screen and (max-width: 1024px) {
-	.search-text { font-size: 20px;}
-	.search-input { width: 40%; font-size: 20px;}
+	.search-text { font-size: 20px; }
+	.search-input { width: 40%; font-size: 20px; }
+	.showList-btn-container { width: 35%; }
+	.city-text { font-size: 1.15em; };
 }
 
 @media screen and (max-width: 768px) {
 	.search-input { width: 50%; }
+	.showList-btn-container { background-color: transparent; }
+	.showList-btn-container h4 {  display:none; }
+	#showList-button { position: absolute; left: 0; }
 }
 
 
@@ -57,13 +100,16 @@ html, body {
 	.search-container { text-align: center; margin: 0; position: absolute; z-index: 1; left: 0px; }
 	.search-input { width: 70%; margin-bottom: 10px; }
 	#submit-button { display: inline-block; text-align: center; }
-}
+	.showList-btn-container { top: 120px;}
+	
 
+}
 
 @media screen and (max-width: 240px) {
 	.search-text { display: none;}
 	.search-input { width: 70%; margin-bottom: 10px; }
 	#submit-button { display: inline-block; text-align: center; }
+
 }
 
 
