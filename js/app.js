@@ -4,12 +4,12 @@
 // Constructor uses ko.observable so view is automatically updated
 // https://discussions.udacity.com/t/having-trouble-accessing-data-outside-an-ajax-request/39072/10
 var VenueModel = function(data) {
-	this.name = ko.observable(data.venue.name);
-	this.formattedAddress = ko.observable(data.venue.location.formattedAddress);
-	this.formattedPhone = ko.observable(data.venue.location.Phone);
-	this.url = ko.observable(data.venue.url);
-	this.rating = ko.observable(data.venue.rating);
-	this.categories = ko.observable(data.venue.categories[0].name);
+	this.name = data.venue.name;
+	this.formattedAddress = data.venue.location.formattedAddress;
+	this.formattedPhone = data.venue.location.Phone;
+	this.url = data.venue.url;
+	this.rating = data.venue.rating;
+	this.categories = data.venue.categories[0].name;
 }
 
 /* ========= ViewModel ========= */
