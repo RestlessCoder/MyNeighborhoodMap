@@ -6,10 +6,41 @@
 var VenueModel = function(data) {
 	this.name = data.venue.name;
 	this.formattedAddress = data.venue.location.formattedAddress;
-	this.formattedPhone = data.venue.location.Phone;
-	this.url = data.venue.url;
-	this.rating = data.venue.rating;
 	this.categories = data.venue.categories[0].name;
+
+	// Handle undefined data and reformating the text
+	this.url = this.getUrl(data);
+	this.rating = this.getRating(data);
+	this.formattedPhone = this.getFormattedPhone(data);
+}
+
+// Credit by lei-clearsky github
+VenueModel.prototype = {
+
+	getUrl: function(data) {
+		if(!data.venue.url) {
+			return 'Website Not Available'
+		} else {
+			return data.venue.url;
+		}
+	},
+
+	getFormattedPhone: function(data) {
+		if(!data.venue.location.Phone) {
+			return 'Phone Not Available'
+		} else {
+			return data.venue.location.Phone;
+		}
+	},
+
+	getRating: function(data) {
+		if(!data.venue.rating) {
+			return '0.0'
+		} else {
+			return data.venue.rating;
+		}
+	}
+
 }
 
 /* ========= ViewModel ========= */
