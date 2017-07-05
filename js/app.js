@@ -6,6 +6,7 @@
 var VenueModel = function(data) {
 	this.name = ko.observable(data.venue.name);
 	this.formattedAddress = ko.observable(data.venue.location.formattedAddress);
+	this.formattedPhone = ko.observable(data.venue.location.Phone);
 	this.url = ko.observable(data.venue.url);
 	this.rating = ko.observable(data.venue.rating);
 	this.categories = ko.observable(data.venue.categories[0].name);
@@ -25,7 +26,7 @@ var AppViewModel = function() {
     self.locationList = ko.observableArray([]);
 
     // Boolean value for displaying venues list of location
-    self.displayVenuesList = ko.observable('false');
+    self.displayVenuesList = ko.observable('');
 
     // Style the markers a bit. This will be our listing marker icon.
     var defaultIcon = makeMarkerIcon('F62217');
@@ -35,7 +36,7 @@ var AppViewModel = function() {
     var highlightedIcon = makeMarkerIcon('0091ff');
 
 	// Initially blank input
-	self.exploreInputSearch = ko.observable('Sushi'); 
+	self.exploreInputSearch = ko.observable(''); 
 
 	// This will perform the search queries of a venue location 
 	self.searchVenueLocations = function() {
@@ -51,6 +52,9 @@ var AppViewModel = function() {
 		var fullUrl = fourSquareUrl + fourSquareID + location + limitSearch + radius + query;
 
 		clearMarkers();
+
+		// Removes all values and returns them as an empty array.
+		self.locationList.removeAll();
 
 		//Retrieves JSON data from the FourSqaure API.
 		$.getJSON(fullUrl, function(data) {
@@ -94,9 +98,9 @@ var AppViewModel = function() {
 		        marker.addListener('click', function() {
 		            setVenueInfoWindow(this, infoWindow);
 		            toggleBounce(this);
-		            // When click on the marker, it will re-center on the marker
+		            // When click on the marker, it will re-center on the 
 		            map.setCenter(this.getPosition());
-		            map.setZoom(14);
+		            map.setZoom(15);
 		        });
 
 		        // Two event listeners - one for mouseover, one for mouseout,
@@ -125,6 +129,8 @@ var AppViewModel = function() {
 		});
 	}
 
+	// Will perform the search when visiting the page
+    self.searchVenueLocations();
 
 	// This function creates the infowindow when the individual marker is clicked. 
 	function setVenueInfoWindow(marker, infowindow) {
@@ -161,11 +167,11 @@ var AppViewModel = function() {
 	function handleVenueDataError(marker) {
 
 		if(!marker.url) {
-			$('.venueUrl').replaceWith("Website Not Available");
+			$('.venueUrl').replaceWith('<div class="venueUrl">Website Not Available</div>');
 		}
 
 		if(!marker.phone) {
-			$('.venuePhone').replaceWith("Phone Not Available");
+			$('.venuePhone').replaceWith('<div class="venuePhone">Phone Not Available</div>');
 		}
 
 		if(!marker.rating) {

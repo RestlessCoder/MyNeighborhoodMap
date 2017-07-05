@@ -10,6 +10,14 @@ html, body {
 	overflow: hidden;
 }
 
+.right {
+	text-align: right;
+}
+
+.left {
+	text-align: left;
+}
+
 /* ===== Google Maps ===== */
 #map-canvas { 
 	height: 100%; 
@@ -70,14 +78,13 @@ html, body {
 
 .showList-container {
 	background-color: #FFF;
+	overflow: auto;
 	position: absolute;
 	z-index: 1;
 	left: 30px; 
-	top: 80px;
+	top: 180px;
+	height: 50%;
 	width: 25%;
-	height: 80px;
-	padding: 10px;
-
 }
 
 /* ===== Media ===== */
