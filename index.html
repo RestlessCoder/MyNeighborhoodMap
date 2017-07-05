@@ -29,12 +29,21 @@
   </form>
   <div class="showList-btn-container">
     <h4 class="city-text">Belfast, United Kingdom</h4>
-    <button data-bind="click: toggleList" class="btn btn-secondary btn-md" id="showList-button"><span data-bind="css: {'icon-plus': displayVenuesList(), 'icon-minus': !displayVenuesList()}"></span></button>
+    <button data-bind="click: toggleList" class="btn btn-secondary btn-md" id="showList-button"><span data-bind="css: {'icon-minus': displayVenuesList(), 'icon-plus': !displayVenuesList()}"></span></button>
   </div>
-  <div data-bind="visible: displayVenuesList">
-    <ul data-bind="foreach: locationList" id="list-group venue-group">
-        <li data-bind="text: name" class="list-group-item"></li>
-    </ul>
+  <div data-bind="visible: displayVenuesList" class="showList-container">
+    <div data-bind="foreach: locationList" class="list-group">
+      <div class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">           
+        <h5 data-bind="text: name" class="mb-1"></h5>          
+          <small data-bind="text: rating"></small>
+        </div>
+          <p data-bind="text: categories" class="mb-1"></p>
+          <p data-bind="text: formattedAddress" class="mb-1"></p>            
+          <p data-bind="text: formattedPhone" class="mb-1"></p>          
+          <p data-bind="text: url" class="mb-1"></p>
+      </div>
+    </div>
   </div>
 
   <script type="text/javascript" src="js/jQuery.js"></script>
