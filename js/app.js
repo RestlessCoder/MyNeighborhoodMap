@@ -7,6 +7,8 @@ var VenueModel = function(data) {
 	this.name = data.venue.name;
 	this.formattedAddress = data.venue.location.formattedAddress;
 	this.categories = data.venue.categories[0].name;
+	this.lat = data.venue.location.lat;
+	this.lng = data.venue.location.lng;
 
 	// Handle undefined data and reformating the text
 	this.url = this.getUrl(data);
@@ -48,6 +50,9 @@ VenueModel.prototype = {
 // This AppViewModel function expression is used inside to bind the HTML
 var AppViewModel = function() {
 	var self = this;
+
+	var marker;
+
 	// Create a new blank for all the listing markers 
 	var markers = [];
 
@@ -69,7 +74,11 @@ var AppViewModel = function() {
 	// Initially blank input
 	self.exploreInputSearch = ko.observable(''); 
 
-	// This will perform the search queries of a venue location 
+	/* This will perform the search queries of a venue location and
+	*  also create Venue markers on map with all the necessary data
+    *  when this venue marker click, it will open the infowindow, set the marker
+    *  bounce and move to the center of the venue marker that have been clicked
+    */
 	self.searchVenueLocations = function() {
 
 		var fourSquareUrl = "https://api.foursquare.com/v2/venues/explore?";
@@ -87,12 +96,11 @@ var AppViewModel = function() {
 		// Removes all values and returns them as an empty array.
 		self.locationList.removeAll();
 
-		//Retrieves JSON data from the FourSqaure API.
+		// Retrieves JSON data from the FourSqaure API.
 		$.getJSON(fullUrl, function(data) {
-
 			// Can be find after ajax successfully called the URL in the GoogleDevTol in Network section (FourSquare API)
 			var fourSquareData = data.response.groups[0].items;
- 		
+
 			for (var i = 0; i < fourSquareData.length; i++) {
 				var name = fourSquareData[i].venue.name;
 				var formattedAddress = fourSquareData[i].venue.location.formattedAddress;
@@ -105,11 +113,8 @@ var AppViewModel = function() {
 				// Get the lng position from the FourSquare SPI
 				var lng = fourSquareData[i].venue.location.lng
 
-				// Loop through the fourSquareData[i] & add the venue model value in an array and notifies observers
-				self.locationList.push(new VenueModel(fourSquareData[i]));
-
 				// Marker with name, address, phone, rating, url & categories
-				var marker = new google.maps.Marker({
+				marker = new google.maps.Marker({
 					icon: defaultIcon,
 					position: new google.maps.LatLng(lat, lng),
 					name: name,
@@ -122,36 +127,40 @@ var AppViewModel = function() {
 					animation: google.maps.Animation.DROP
 				});
 
-				// Push the marker to our array of markers
-          		markers.push(marker);
+				// Loop through the fourSquareData[i] & add the venue model value in an array and notifies observers
+				self.locationList.push(new VenueModel(fourSquareData[i]));
 
-          		// Create an onclick event to open an infowindow at each marker.
+				// Push the marker to our array of markers
+		  		markers.push(marker);
+
+		      	// Create an onclick event to open an infowindow at each marker.
 		        marker.addListener('click', function() {
 		            setVenueInfoWindow(this, infoWindow);
 		            toggleBounce(this);
 		            // When click on the marker, it will re-center on the 
-		            map.setCenter(this.getPosition());
-		            map.setZoom(15);
+			        map.setCenter(this.getPosition());
+		            map.setZoom(16);
 		        });
 
-		        // Two event listeners - one for mouseover, one for mouseout,
-         		// to change the colors back and forth.
+			    // Two event listeners - one for mouseover, one for mouseout,
+		  		// to change the colors back and forth.
 		        marker.addListener('mouseover', function() {
-		        	this.setIcon(highlightedIcon);
+			       	this.setIcon(highlightedIcon);
 		        });
 
-          		marker.addListener('mouseout', function() {
-            		this.setIcon(defaultIcon);
-          		});
+		      	marker.addListener('mouseout', function() {
+		        	this.setIcon(defaultIcon);
+		      	});
 
-				// set bounds according to suggestedBounds from foursquare data response
+			    // set bounds according to suggestedBounds from foursquare data response
 				var suggestedBounds = data.response.suggestedBounds;
 				if (suggestedBounds != undefined) {
 					bounds = new google.maps.LatLngBounds(
 						new google.maps.LatLng(suggestedBounds.sw.lat, suggestedBounds.sw.lng),
 						new google.maps.LatLng(suggestedBounds.ne.lat, suggestedBounds.ne.lng));
 					map.fitBounds(bounds);
-				}
+				}   
+
 			} // End for loop
 
 		}).error(function(e) {
@@ -187,6 +196,15 @@ var AppViewModel = function() {
 		// Will handle all the marker data errors
 		handleVenueDataError(marker);
 
+	}
+
+	// When item is clicked in venues listing, panTo the venue marker on map, display infowindow & togglebounce
+    self.panToMarker = function(venue) {
+    	console.log(venue);
+	   	var latLng = new google.maps.LatLng(venue.lat, venue.lng);
+
+	   	map.panTo(latLng);
+	   	
 	}
 
 	// Update function for venues list display
