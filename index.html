@@ -32,7 +32,8 @@
     <button data-bind="click: toggleList" class="btn btn-secondary btn-md" id="showList-button"><span data-bind="css: {'icon-minus': displayVenuesList(), 'icon-plus': !displayVenuesList()}"></span></button>
   </div>
   <div data-bind="visible: displayVenuesList" class="showList-container">
-    <div data-bind="foreach: locationList" class="list-group">
+    <input data-bind="value: filter, valueUpdate: 'afterkeydown'" type="text" placeholder="Filter Search" id="filter-search" class="search-input" maxlength="25"> 
+    <div data-bind="foreach: filterResults" class="list-group">
       <div data-bind="click: $root.panToMarker" class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">           
         <h5 data-bind="text: name" class="mb-1"></h5>          
@@ -44,8 +45,7 @@
           <p data-bind="text: url" class="mb-1"></p>
       </div>
     </div>
-  </div>
-
+    
   <script type="text/javascript" src="js/jQuery.js"></script>
   <!-- Load the Google Maps API-->
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?"></script> 

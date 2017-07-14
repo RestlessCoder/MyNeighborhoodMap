@@ -50,6 +50,11 @@ html, body {
 	height: 38px;
 }
 
+/* ===== Filter Keywords ===== */
+#filter-search {
+	margin: 15px;
+}
+
 /* ===== Show Lists ===== */
 .showList-btn-container {
 	background-color: #FFF;

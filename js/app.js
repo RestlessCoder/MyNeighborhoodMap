@@ -9,7 +9,7 @@ var VenueModel = function(data) {
 	this.categories = data.venue.categories[0].name;
 	this.lat = data.venue.location.lat;
 	this.lng = data.venue.location.lng;
-
+	this.marker = new google.maps.Marker({});
 	// Handle undefined data and reformating the text
 	this.url = this.getUrl(data);
 	this.rating = this.getRating(data);
@@ -59,10 +59,13 @@ var AppViewModel = function() {
 	var infoWindow = new google.maps.InfoWindow();
 
 	// Creates an observable array to find various locations.
-    self.locationList = ko.observableArray([]);
+    self.locationList = ko.observableArray([]); 
 
     // Boolean value for displaying venues list of location
-    self.displayVenuesList = ko.observable('');
+    self.displayVenuesList = ko.observable('true');
+
+   // Initially blank input
+   self.filter = ko.observable('');
 
     // Style the markers a bit. This will be our listing marker icon.
     var defaultIcon = makeMarkerIcon('F62217');
@@ -111,12 +114,14 @@ var AppViewModel = function() {
 				// Get the lat position from the FourSquare API
 				var lat = fourSquareData[i].venue.location.lat;
 				// Get the lng position from the FourSquare SPI
-				var lng = fourSquareData[i].venue.location.lng
+				var lng = fourSquareData[i].venue.location.lng 
+
+				var placeMarker =  new google.maps.LatLng(lat, lng);
 
 				// Marker with name, address, phone, rating, url & categories
 				marker = new google.maps.Marker({
 					icon: defaultIcon,
-					position: new google.maps.LatLng(lat, lng),
+					position: placeMarker,
 					name: name,
 					categories : categories,
 					phone: formattedPhone,
@@ -129,6 +134,8 @@ var AppViewModel = function() {
 
 				// Loop through the fourSquareData[i] & add the venue model value in an array and notifies observers
 				self.locationList.push(new VenueModel(fourSquareData[i]));
+
+				self.locationList()[i].marker = marker;
 
 				// Push the marker to our array of markers
 		  		markers.push(marker);
@@ -198,13 +205,36 @@ var AppViewModel = function() {
 
 	}
 
+	// This will filter the location list of venue with text input of the name's location
+	self.filterResults = ko.computed(function() {
+
+		var filter = self.filter().toLowerCase();
+
+		if (filter === null) {
+			
+			return self.locationList();
+
+		} else {
+			return ko.utils.arrayFilter(self.locationList(), function(place) {
+				// Hide the marker when the text input doesn't match the place name and show the marker 
+				// with the closest place name
+				if (place.name.toLowerCase().indexOf(filter) !== -1) {	
+					place.marker.setVisible(true);
+				} else {
+					place.marker.setVisible(false);
+				}
+				// if there is a marker window open, close it
+        		infoWindow.close();
+
+				return place.name.toLowerCase().indexOf(filter) !== -1; 
+			});
+		}
+
+	});
+
 	// When item is clicked in venues listing, panTo the venue marker on map, display infowindow & togglebounce
     self.panToMarker = function(venue) {
-    	console.log(venue);
-	   	var latLng = new google.maps.LatLng(venue.lat, venue.lng);
-
-	   	map.panTo(latLng);
-	   	
+	   	google.maps.event.trigger(venue.marker,'click');
 	}
 
 	// Update function for venues list display
@@ -230,7 +260,6 @@ var AppViewModel = function() {
 
 	// This function will make the marker bounce when you click on them
 	function toggleBounce(marker) {
-
        	if (marker.getAnimation() != null) {
             marker.setAnimation(null);
         } else {
@@ -294,4 +323,3 @@ $(document).ready(function() {
 	ko.applyBindings(new AppViewModel());
 
 });
-
