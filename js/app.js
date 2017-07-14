@@ -10,6 +10,7 @@ var VenueModel = function(data) {
 	this.lat = data.venue.location.lat;
 	this.lng = data.venue.location.lng;
 	this.marker = new google.maps.Marker({});
+	this.imgSrc = 'https://irs0.4sqi.net/img/general/180x100' + data.venue.photos.groups[0].items[0].suffix;
 	// Handle undefined data and reformating the text
 	this.url = this.getUrl(data);
 	this.rating = this.getRating(data);
@@ -28,10 +29,10 @@ VenueModel.prototype = {
 	},
 
 	getFormattedPhone: function(data) {
-		if(!data.venue.location.Phone) {
+		if(!data.venue.contact.formattedPhone) {
 			return 'Phone Not Available'
 		} else {
-			return data.venue.location.Phone;
+			return data.venue.contact.formattedPhone;
 		}
 	},
 
@@ -89,10 +90,11 @@ var AppViewModel = function() {
 		var limitSearch = "&limit=" + 20;
 		var location = "&near=belfast";
 		var radius = "&radius=" + 600;
+		var venuePhotos = "&venuePhotos=" + 1;
 		// This will query the venues from the input 
 		var query = "&query=" + self.exploreInputSearch();
 
-		var fullUrl = fourSquareUrl + fourSquareID + location + limitSearch + radius + query;
+		var fullUrl = fourSquareUrl + fourSquareID + location + limitSearch + radius + venuePhotos + query;
 
 		clearMarkers();
 
@@ -105,6 +107,7 @@ var AppViewModel = function() {
 			var fourSquareData = data.response.groups[0].items;
 
 			for (var i = 0; i < fourSquareData.length; i++) {
+				var id = fourSquareData[i].venue.id;
 				var name = fourSquareData[i].venue.name;
 				var formattedAddress = fourSquareData[i].venue.location.formattedAddress;
 				var formattedPhone = fourSquareData[i].venue.contact.formattedPhone;
@@ -114,8 +117,8 @@ var AppViewModel = function() {
 				// Get the lat position from the FourSquare API
 				var lat = fourSquareData[i].venue.location.lat;
 				// Get the lng position from the FourSquare SPI
-				var lng = fourSquareData[i].venue.location.lng 
-
+				var lng = fourSquareData[i].venue.location.lng;
+				
 				var placeMarker =  new google.maps.LatLng(lat, lng);
 
 				// Marker with name, address, phone, rating, url & categories
@@ -188,7 +191,7 @@ var AppViewModel = function() {
 																   + '<div class="venuePhone">' + marker.phone + '</div>'
 																   + '<div class="venueAddress">' + marker.address + '</div>'
 																   + '<div class="venueUrl">' + marker.url + '</div>'
-																   + '</div>';
+																   + '</div>';  
 		// Check to make sure the infowindow is not already opened on this marker.														   
 		if(infowindow.marker != marker) {
 			infowindow.marker = marker;
