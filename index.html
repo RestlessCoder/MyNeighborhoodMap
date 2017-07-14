@@ -35,14 +35,21 @@
     <input data-bind="value: filter, valueUpdate: 'afterkeydown'" type="text" placeholder="Filter Search" id="filter-search" class="search-input" maxlength="25"> 
     <div data-bind="foreach: filterResults" class="list-group">
       <div data-bind="click: $root.panToMarker" class="list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-between">           
+        <div class="d-flex w-100 justify-content-between">      
         <h5 data-bind="text: name" class="mb-1"></h5>          
           <small data-bind="text: rating"></small>
         </div>
-          <p data-bind="text: categories" class="mb-1"></p>
-          <p data-bind="text: formattedAddress" class="mb-1"></p>            
-          <p data-bind="text: formattedPhone" class="mb-1"></p>          
-          <p data-bind="text: url" class="mb-1"></p>
+        <div class="content">
+          <div class="left-text">
+            <p data-bind="text: categories" class="mb-1"></p>
+            <p data-bind="text: formattedAddress" class="mb-1"></p>            
+            <p data-bind="text: formattedPhone" class="mb-1"></p>          
+            <p data-bind="text: url" class="mb-1"></p>
+          </div>
+          <div class="right-img">
+            <img class="venue-img" data-bind="attr {'src': imgSrc}">
+          </div>
+        </div>
       </div>
     </div>
     

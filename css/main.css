@@ -92,6 +92,23 @@ html, body {
 	width: 25%;
 }
 
+.content {
+	width: 100%;
+}
+
+.venue-img {
+	width: 40%;
+	display: block;
+	margin: 0 auto;
+	padding-top: 15px;
+}
+
+.left-text {
+	float: left;
+	width: 60%;
+	font-size: 0.9em;
+}
+
 /* ===== Media ===== */
 @media screen and (max-width: 1024px) {
 	.search-text { font-size: 20px; }
