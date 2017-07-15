@@ -53,6 +53,7 @@ html, body {
 /* ===== Filter Keywords ===== */
 #filter-search {
 	margin: 15px;
+	width: 80%;
 }
 
 /* ===== Show Lists ===== */
@@ -68,6 +69,10 @@ html, body {
 
 }
 
+.list-group-item {
+	background-color: #FFF;
+}
+
 .city-text { 
 	display: inline;
 	font-size: 1.25em;
@@ -78,7 +83,6 @@ html, body {
 	position: absolute;
 	right: 0;
 	margin-right: 10px;
-
 }
 
 .showList-container {
@@ -97,16 +101,21 @@ html, body {
 }
 
 .venue-img {
-	width: 40%;
+	width: 25%;
 	display: block;
 	margin: 0 auto;
-	padding-top: 15px;
+	padding-top: 10px;
 }
 
 .left-text {
 	float: left;
-	width: 60%;
-	font-size: 0.9em;
+	width: 75%;
+	font-size: 0.8em;
+}
+
+#pano {
+    width: 250px;
+    height: 200px;
 }
 
 /* ===== Media ===== */

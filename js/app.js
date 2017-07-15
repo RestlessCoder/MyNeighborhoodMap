@@ -3,18 +3,24 @@
 // The Venue model that initialize and store venue information of the place 
 // Constructor uses ko.observable so view is automatically updated
 // https://discussions.udacity.com/t/having-trouble-accessing-data-outside-an-ajax-request/39072/10
-var VenueModel = function(data) {
+var VenueModel = function(data, fourSquareID) {
+	this.id = data.venue.id;
 	this.name = data.venue.name;
 	this.formattedAddress = data.venue.location.formattedAddress;
 	this.categories = data.venue.categories[0].name;
 	this.lat = data.venue.location.lat;
 	this.lng = data.venue.location.lng;
 	this.marker = new google.maps.Marker({});
-	this.imgSrc = 'https://irs0.4sqi.net/img/general/180x100' + data.venue.photos.groups[0].items[0].suffix;
+	// Get image for fourSquare
+	this.imgPrefix = data.venue.categories[0].icon.prefix;
+    this.imgSuffix = data.venue.categories[0].icon.suffix;
+	
 	// Handle undefined data and reformating the text
 	this.url = this.getUrl(data);
 	this.rating = this.getRating(data);
 	this.formattedPhone = this.getFormattedPhone(data);
+	this.imgSrc = this.getImgSrc(data);
+
 }
 
 // Credit by lei-clearsky github
@@ -26,6 +32,10 @@ VenueModel.prototype = {
 		} else {
 			return data.venue.url;
 		}
+	},
+
+	getImgSrc: function(data) {
+		return this.imgPrefix + 'bg_64' + this.imgSuffix;
 	},
 
 	getFormattedPhone: function(data) {
@@ -65,8 +75,8 @@ var AppViewModel = function() {
     // Boolean value for displaying venues list of location
     self.displayVenuesList = ko.observable('true');
 
-   // Initially blank input
-   self.filter = ko.observable('');
+    // Initially blank input
+    self.filter = ko.observable('');
 
     // Style the markers a bit. This will be our listing marker icon.
     var defaultIcon = makeMarkerIcon('F62217');
@@ -90,18 +100,17 @@ var AppViewModel = function() {
 		var limitSearch = "&limit=" + 20;
 		var location = "&near=belfast";
 		var radius = "&radius=" + 600;
-		var venuePhotos = "&venuePhotos=" + 1;
 		// This will query the venues from the input 
 		var query = "&query=" + self.exploreInputSearch();
 
-		var fullUrl = fourSquareUrl + fourSquareID + location + limitSearch + radius + venuePhotos + query;
+		var fullUrl = fourSquareUrl + fourSquareID + location + limitSearch + radius + query;
 
 		clearMarkers();
 
 		// Removes all values and returns them as an empty array.
 		self.locationList.removeAll();
 
-		// Retrieves JSON data from the FourSqaure API.
+		// Retrieves JSON data from the FourSquare API.
 		$.getJSON(fullUrl, function(data) {
 			// Can be find after ajax successfully called the URL in the GoogleDevTol in Network section (FourSquare API)
 			var fourSquareData = data.response.groups[0].items;
@@ -124,6 +133,7 @@ var AppViewModel = function() {
 				// Marker with name, address, phone, rating, url & categories
 				marker = new google.maps.Marker({
 					icon: defaultIcon,
+					id: id,
 					position: placeMarker,
 					name: name,
 					categories : categories,
@@ -135,8 +145,8 @@ var AppViewModel = function() {
 					animation: google.maps.Animation.DROP
 				});
 
-				// Loop through the fourSquareData[i] & add the venue model value in an array and notifies observers
-				self.locationList.push(new VenueModel(fourSquareData[i]));
+				// Loop through the fourSquareData[i] & add the venue model value in an array & also add fourSquareID and notifies observers
+				self.locationList.push(new VenueModel(fourSquareData[i], fourSquareID));
 
 				self.locationList()[i].marker = marker;
 
@@ -191,21 +201,51 @@ var AppViewModel = function() {
 																   + '<div class="venuePhone">' + marker.phone + '</div>'
 																   + '<div class="venueAddress">' + marker.address + '</div>'
 																   + '<div class="venueUrl">' + marker.url + '</div>'
-																   + '</div>';  
+																   + '<div id="pano"></div></div>';  
 		// Check to make sure the infowindow is not already opened on this marker.														   
 		if(infowindow.marker != marker) {
 			infowindow.marker = marker;
-			infowindow.setContent(contentString);
+			// Clear the infowindow content to give the streetview time to load.
+			infowindow.setContent('');
 			infowindow.open(map, marker);
 			// Make sure the marker property is cleared if the infowindow is closed
 			infowindow.addListener('closeclick', function() {
 				infowindow.setMarker = null;
 			});
+
+			var streetViewService = new google.maps.StreetViewService();
+	        var radius = 50;
+	        // In case the status is OK, which means the pano was found, compute the
+	        // position of the streetview image, then calculate the heading, then get a
+	        // panorama from that and set the options
+	        var getStreetView = function(data, status) {
+	            if (status == google.maps.StreetViewStatus.OK) {
+	              	var nearStreetViewLocation = data.location.latLng;
+	              	var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
+	                infowindow.setContent(contentString);
+	                // Will handle all the marker data errors
+					handleVenueDataError(marker);
+	                var panoramaOptions = {
+	                  position: nearStreetViewLocation,
+	                  pov: {
+	                    heading: heading,
+	                    pitch: 0
+	                  }
+	                };
+	              	var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), panoramaOptions);
+	            } else {
+	              infowindow.setContent(contentString + '<div>No Street View Found</div>');
+	              // Will handle all the marker data errors
+				  handleVenueDataError(marker);
+	            }
+	          }
+	          // Use streetview service to get the closest streetview image within
+	          // 50 meters of the markers position
+	          streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+	          // Open the infowindow on the correct marker.
+	          infowindow.open(map, marker);
 		}
-
-		// Will handle all the marker data errors
-		handleVenueDataError(marker);
-
+		
 	}
 
 	// This will filter the location list of venue with text input of the name's location
@@ -226,8 +266,6 @@ var AppViewModel = function() {
 				} else {
 					place.marker.setVisible(false);
 				}
-				// if there is a marker window open, close it
-        		infoWindow.close();
 
 				return place.name.toLowerCase().indexOf(filter) !== -1; 
 			});
