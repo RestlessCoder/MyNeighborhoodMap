@@ -36,7 +36,7 @@
     <div data-bind="foreach: filterResults" class="list-group">
       <div data-bind="click: $root.panToMarker" class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">      
-        <h5 data-bind="text: name" class="mb-1"></h5>          
+          <h6 data-bind="text: name" class="mb-1"></h6>          
           <small data-bind="text: rating"></small>
         </div>
         <div class="content">
@@ -55,9 +55,10 @@
     
   <script type="text/javascript" src="js/jQuery.js"></script>
   <!-- Load the Google Maps API-->
-  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?"></script> 
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=geometry"></script> 
   <script type="text/javascript" src="js/lib/knockout-3.2.0.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
   
 </body>
 </html>
+
