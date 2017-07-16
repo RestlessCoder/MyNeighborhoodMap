@@ -154,24 +154,16 @@ var AppViewModel = function() {
 		  		markers.push(marker);
 
 		      	// Create an onclick event to open an infowindow at each marker.
-		        marker.addListener('click', function() {
-		            setVenueInfoWindow(this, infoWindow);
-		            toggleBounce(this);
-		        });
+		        marker.addListener('click', openInfoWindow);
 
 			    // Two event listeners - one for mouseover, one for mouseout,
 		  		// to change the colors back and forth.
-		        marker.addListener('mouseover', function() {
-			       	this.setIcon(highlightedIcon);
-		        });
-
-		      	marker.addListener('mouseout', function() {
-		        	this.setIcon(defaultIcon);
-		      	});
+		        marker.addListener('mouseover', setHighlightedIcon);
+		      	marker.addListener('mouseout', setDefaultIcon);
 
 			    // set bounds according to suggestedBounds from foursquare data response
 				var suggestedBounds = data.response.suggestedBounds;
-				if (suggestedBounds !== undefined) {
+				if (suggestedBounds != undefined) {
 					bounds = new google.maps.LatLngBounds(
 						new google.maps.LatLng(suggestedBounds.sw.lat, suggestedBounds.sw.lng),
 						new google.maps.LatLng(suggestedBounds.ne.lat, suggestedBounds.ne.lng));
@@ -299,7 +291,7 @@ var AppViewModel = function() {
 
 	// This function will make the marker bounce when you click on them
 	function toggleBounce(marker) {
-       	if (marker.getAnimation() !== null) {
+       	if (marker.getAnimation() != null) {
             marker.setAnimation(null);
         } else {
             marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -332,6 +324,19 @@ var AppViewModel = function() {
         return markerImage;
     
     }
+
+	function openInfoWindow() {
+		setVenueInfoWindow(this, infoWindow);
+		toggleBounce(this);
+	}
+
+	function setDefaultIcon() {
+		this.setIcon(highlightedIcon);
+	}
+
+	function setHighlightedIcon() {
+		this.setIcon(highlightedIcon);
+	}
 
 };	// End of AppViewModel
 
