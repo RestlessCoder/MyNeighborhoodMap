@@ -157,9 +157,6 @@ var AppViewModel = function() {
 		        marker.addListener('click', function() {
 		            setVenueInfoWindow(this, infoWindow);
 		            toggleBounce(this);
-		            // When click on the marker, it will re-center on the 
-			        map.setCenter(this.getPosition());
-		            map.setZoom(16);
 		        });
 
 			    // Two event listeners - one for mouseover, one for mouseout,
@@ -196,18 +193,18 @@ var AppViewModel = function() {
 	function setVenueInfoWindow(marker, infowindow) {
 
 		var contentString = '<div class="venue-infowindow">' + '<div class="venueName">' + marker.name 
-																   + '<span class="venueRating">' + marker.rating + '</span></div>'
-																   + '<div class="venueCategories">' + marker.categories 
-																   + '<div class="venuePhone">' + marker.phone + '</div>'
-																   + '<div class="venueAddress">' + marker.address + '</div>'
-																   + '<div class="venueUrl">' + marker.url + '</div>'
-																   + '<div id="pano"></div></div>';  
+																   + '<span class="venueRating right"><i class="icon-star" aria-hidden="true"> ' + marker.rating + '</i></span></div>'
+																   + '<div class="venueCategories"><i class="icon-tags" aria-hidden="true"></i> ' + marker.categories + '</div>'
+																   + '<div class="venueAddress"><i class="icon-map-marker" aria-hidden="true"></i> ' + marker.address + '</div>'
+																   + '<div class="venuePhone"><i class="icon-phone" aria-hidden="true"></i> ' + marker.phone + '</div>'
+																   + '<div class="venueUrl"><i class="icon-globe" aria-hidden="true"></i> ' + '<a href=' + marker.url + ' target="_blank">' + marker.url + '</a></div>'
+																   + '<br><div id="pano"></div></div>';  
 		// Check to make sure the infowindow is not already opened on this marker.														   
 		if(infowindow.marker != marker) {
 			infowindow.marker = marker;
 			// Clear the infowindow content to give the streetview time to load.
 			infowindow.setContent('');
-			infowindow.open(map, marker);
+			infowindow.marker = marker;
 			// Make sure the marker property is cleared if the infowindow is closed
 			infowindow.addListener('closeclick', function() {
 				infowindow.setMarker = null;
@@ -267,7 +264,11 @@ var AppViewModel = function() {
 					place.marker.setVisible(false);
 				}
 
+				// if there is a marker window open, close it
+         		infoWindow.close();
+
 				return place.name.toLowerCase().indexOf(filter) !== -1; 
+
 			});
 		}
 
@@ -287,15 +288,15 @@ var AppViewModel = function() {
 	function handleVenueDataError(marker) {
 
 		if(!marker.url) {
-			$('.venueUrl').replaceWith('<div class="venueUrl">Website Not Available</div>');
+			$('.venueUrl').replaceWith('<div class="venueUrl"><i class="icon-globe" aria-hidden="true"></i> Website Not Available</div>');
 		}
 
 		if(!marker.phone) {
-			$('.venuePhone').replaceWith('<div class="venuePhone">Phone Not Available</div>');
+			$('.venuePhone').replaceWith('<div class="venuePhone"><i class="icon-phone" aria-hidden="true"></i> Phone Not Available</div>');
 		}
 
 		if(!marker.rating) {
-			$('.venueRating').replaceWith("0.0");
+			$('.venueRating').replaceWith('<span class="venueRating right"><i class="icon-star" aria-hidden="true"></i> 0.0</span>');
 		}
 	}
 

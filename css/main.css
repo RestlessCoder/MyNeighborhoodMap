@@ -11,16 +11,17 @@ html, body {
 }
 
 .right {
-	text-align: right;
+	float: right;
 }
 
-.left {
-	text-align: left;
-}
-
-/* ===== Google Maps ===== */
+/* ===== Google Maps && Street View Panoramas ===== */
 #map-canvas { 
 	height: 100%; 
+}
+
+#pano {
+	height: 200px;
+	width: 250px;
 }
 
 /* ===== Search Venues ===== */
@@ -100,22 +101,45 @@ html, body {
 	width: 100%;
 }
 
+.left-text {
+	float: left;
+	width: 80%;
+	font-size: 0.8em;
+}
+
 .venue-img {
-	width: 25%;
+	width: 20%;
 	display: block;
 	margin: 0 auto;
 	padding-top: 10px;
 }
 
-.left-text {
-	float: left;
-	width: 75%;
-	font-size: 0.8em;
+.venue-rating {
+	border: 1px solid #FFF;
+	border-radius: 5px;
+	background-color: #FF8C00;
+	padding: 3px 8px;
 }
 
-#pano {
-    width: 250px;
-    height: 200px;
+/* ===== InfoWindow ===== */
+.venue-infowindow {
+	width: 250px;
+}
+
+.venueName {
+	font-weight: bold;
+	font-size: 17px;
+}
+
+.venueRating {
+	border: 1px solid #FFF;
+	border-radius: 5px;
+	background-color: #FF8C00;
+	padding: 3px 8px;
+}
+
+.venueAddress {
+	width: 80%;
 }
 
 /* ===== Media ===== */
