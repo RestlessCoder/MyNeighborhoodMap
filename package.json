@@ -1,0 +1,26 @@
+{
+  "name": "neighborhoodmap",
+  "version": "1.0.0",
+  "description": "Neighborhood Map ProjectONeighborhood Map Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RestlessCoder/MyNeighborhoodMap.git"
+  },
+  "keywords": [
+    "map"
+  ],
+  "author": "Chee Aik Lim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RestlessCoder/MyNeighborhoodMap/issues"
+  },
+  "homepage": "https://github.com/RestlessCoder/MyNeighborhoodMap#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.7.0"
+  }
+}
