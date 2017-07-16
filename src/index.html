@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <meta name="description" content="Neighborhood Map">
+  <meta name="author" content="Nick Lim">
+  <title>Neighborhood Map</title>
+
+  <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"> 
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body> 
+  <!-- Google Maps -->
+  <div id="googleMap-Error"></div>
+  <div id="map-canvas"></div>
+  <form data-bind="submit: searchVenueLocations" class="search-container">
+    <span class="search-text">Find</span>
+    <input data-bind="value: exploreInputSearch" type="text" placeholder="I'm looking for Restaurants, Hotels & Bars" id="search-venues" class="search-input" maxlength="25"> 
+    <button id="submit-button" type="submit" class="btn btn-primary">Submit</button>
+    <p class="fourSquareData-Error"></p>
+  </form>
+  <div class="showList-btn-container">
+    <h4 class="city-text">Belfast, United Kingdom</h4>
+    <button data-bind="click: toggleList" class="btn btn-secondary btn-md" id="showList-button"><span data-bind="css: {'icon-minus': displayVenuesList(), 'icon-plus': !displayVenuesList()}"></span></button>
+  </div>
+  <div data-bind="visible: displayVenuesList" class="showList-container">
+    <input data-bind="value: filter, valueUpdate: 'afterkeydown'" type="text" placeholder="Filter Search" id="filter-search" maxlength="25"> 
+    <div data-bind="foreach: filterResults" class="list-group">
+      <div data-bind="click: $root.panToMarker" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">      
+          <h6 data-bind="text: name" class="venue-name mb-1"></h6>          
+          <small data-bind="text: rating" class="venue-rating"></small>
+        </div>
+        <div class="content">
+          <div class="left-text">
+            <p data-bind="text: categories" class="venue-categories mb-1"></p>
+            <p data-bind="text: formattedAddress" class="venue-address mb-1"></p>            
+            <p data-bind="text: formattedPhone" class="venue-phone mb-1"></p>          
+            <p data-bind="text: url" class="venue-url mb-1"></a></p>
+          </div>
+          <div class="right-img">
+            <img class="venue-img" data-bind="attr {'src': imgSrc}">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  <script type="text/javascript" src="js/jQuery.js"></script>
+  <!-- Load the Google Maps API-->
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script> 
+  <script type="text/javascript" src="js/lib/knockout-3.2.0.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  
+</body>
+</html>
+
