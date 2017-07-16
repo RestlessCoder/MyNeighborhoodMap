@@ -163,7 +163,7 @@ var AppViewModel = function() {
 
 			    // set bounds according to suggestedBounds from foursquare data response
 				var suggestedBounds = data.response.suggestedBounds;
-				if (suggestedBounds != undefined) {
+				if (suggestedBounds !== undefined) {
 					bounds = new google.maps.LatLngBounds(
 						new google.maps.LatLng(suggestedBounds.sw.lat, suggestedBounds.sw.lng),
 						new google.maps.LatLng(suggestedBounds.ne.lat, suggestedBounds.ne.lng));
@@ -291,7 +291,7 @@ var AppViewModel = function() {
 
 	// This function will make the marker bounce when you click on them
 	function toggleBounce(marker) {
-       	if (marker.getAnimation() != null) {
+       	if (marker.getAnimation() !== null) {
             marker.setAnimation(null);
         } else {
             marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -331,7 +331,7 @@ var AppViewModel = function() {
 	}
 
 	function setDefaultIcon() {
-		this.setIcon(highlightedIcon);
+		this.setIcon(defaultIcon);
 	}
 
 	function setHighlightedIcon() {
