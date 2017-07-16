@@ -45,7 +45,7 @@ html, body {
 
 .search-input { 
 	box-shadow: 0 2px 6px rgba(0,0,0,0.3); 
-	font-size: 16px;
+	font-size: 1em;
 	padding: 5px 10px;
 	width: 20%;
 	height: 38px;
@@ -54,6 +54,9 @@ html, body {
 /* ===== Filter Keywords ===== */
 #filter-search {
 	margin: 15px;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.3); 
+	font-size: 1.15em;
+	padding: 5px 10px;
 	width: 80%;
 }
 
@@ -146,15 +149,19 @@ html, body {
 @media screen and (max-width: 1024px) {
 	.search-text { font-size: 20px; }
 	.search-input { width: 40%; font-size: 20px; }
-	.showList-btn-container { width: 35%; }
+	.showList-btn-container { width: 30%; font-size: 0.75em;}
+	.showList-container { width: 30%; font-size:0.9em; }
 	.city-text { font-size: 1.15em; };
+	#filter-search { font-size: 1.15em;}
 }
 
 @media screen and (max-width: 768px) {
 	.search-input { width: 50%; }
 	.showList-btn-container { background-color: transparent; }
-	.showList-btn-container h4 {  display:none; }
+	.showList-btn-container h4 { display:none; }
+	.showList-container { width: 40%; font-size: 0.75em; }
 	#showList-button { position: absolute; left: 0; }
+	#filter-search { font-size: 1em; }
 }
 
 
@@ -163,15 +170,18 @@ html, body {
 	.search-input { width: 70%; margin-bottom: 10px; }
 	#submit-button { display: inline-block; text-align: center; }
 	.showList-btn-container { top: 120px;}
+	.showList-container { width: 65%; font-size: 0.75em; }
+	.venue-infowindow { width: 210px; font-size: 0.75em; }
+	.venueRating{ font-size: 0.6em; }
+	#pano { width: 210px; height: 160px; }
 	
-
 }
 
 @media screen and (max-width: 240px) {
 	.search-text { display: none;}
 	.search-input { width: 70%; margin-bottom: 10px; }
 	#submit-button { display: inline-block; text-align: center; }
-
+	.showList-container { width: 80%; font-size: 0.75em; }
 }
 
 
