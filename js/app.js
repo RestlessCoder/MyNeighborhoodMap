@@ -342,7 +342,6 @@ var AppViewModel = function() {
 
 // Initialize the map
 function initMap() {
-
 	var mapOptions = {
 		zoom: 14,
 		center: {lat: 54.596724, lng: -5.930082},
@@ -351,19 +350,14 @@ function initMap() {
 
 	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions); 
 
-    //If the Google Maps API does not respond, it will load this error.
-    if (typeof google == 'undefined') {
-        $('#googleMap-Error').html('<h1>There are errors when retrieving map data. Please try again Later!</h1>'); 
-    		return;
-	}
+	ko.applyBindings(new AppViewModel());
+
+}
+
+//Alerts user of an error with google.
+function googleMapError() {
+    alert("Google Has Encountered An Error.  Please Try Again Later");
 }
 
 
-// This will apply the bindings for AppViewModel().
-$(document).ready(function() {
 
-	// Initialize the map
-	initMap();
-	ko.applyBindings(new AppViewModel());
-
-});

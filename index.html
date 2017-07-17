@@ -44,7 +44,7 @@
             <p data-bind="text: categories" class="venue-categories mb-1"></p>
             <p data-bind="text: formattedAddress" class="venue-address mb-1"></p>            
             <p data-bind="text: formattedPhone" class="venue-phone mb-1"></p>          
-            <p data-bind="text: url" class="venue-url mb-1"></a></p>
+            <p data-bind="text: url" class="venue-url mb-1"></p>
           </div>
           <div class="right-img">
             <img class="venue-img" data-bind="attr {'src': imgSrc}">
@@ -54,10 +54,10 @@
     </div>
     
   <script type="text/javascript" src="js/jQuery.js"></script>
-  <!-- Load the Google Maps API-->
-  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script> 
   <script type="text/javascript" src="js/lib/knockout-3.2.0.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
+   <!-- Load the Google Maps API-->
+  <script async defer type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyADtN62D15md_wxLAhl3dOtRjeRm6W_6ko&v=3&callback=initMap" onerror="googleMapError()"></script> 
   
 </body>
 </html>
