@@ -3,7 +3,7 @@
 // The Venue model that initialize and store venue information of the place 
 // Constructor uses ko.observable so view is automatically updated
 // https://discussions.udacity.com/t/having-trouble-accessing-data-outside-an-ajax-request/39072/10
-var VenueModel = function(data, fourSquareID) {
+var VenueModel = function(data) {
 	this.id = data.venue.id;
 	this.name = data.venue.name;
 	this.formattedAddress = data.venue.location.formattedAddress;
@@ -21,14 +21,14 @@ var VenueModel = function(data, fourSquareID) {
 	this.formattedPhone = this.getFormattedPhone(data);
 	this.imgSrc = this.getImgSrc(data);
 
-}
+};
 
 // Credit by lei-clearsky github
 VenueModel.prototype = {
 
 	getUrl: function(data) {
 		if(!data.venue.url) {
-			return 'Website Not Available'
+			return 'Website Not Available';
 		} else {
 			return data.venue.url;
 		}
@@ -40,7 +40,7 @@ VenueModel.prototype = {
 
 	getFormattedPhone: function(data) {
 		if(!data.venue.contact.formattedPhone) {
-			return 'Phone Not Available'
+			return 'Phone Not Available';
 		} else {
 			return data.venue.contact.formattedPhone;
 		}
@@ -48,13 +48,13 @@ VenueModel.prototype = {
 
 	getRating: function(data) {
 		if(!data.venue.rating) {
-			return '0.0'
+			return '0.0';
 		} else {
 			return data.venue.rating;
 		}
 	}
 
-}
+};
 
 /* ========= ViewModel ========= */
 
@@ -146,7 +146,7 @@ var AppViewModel = function() {
 				});
 
 				// Loop through the fourSquareData[i] & add the venue model value in an array & also add fourSquareID and notifies observers
-				self.locationList.push(new VenueModel(fourSquareData[i], fourSquareID));
+				self.locationList.push(new VenueModel(fourSquareData[i]));
 
 				self.locationList()[i].marker = marker;
 
@@ -154,24 +154,16 @@ var AppViewModel = function() {
 		  		markers.push(marker);
 
 		      	// Create an onclick event to open an infowindow at each marker.
-		        marker.addListener('click', function() {
-		            setVenueInfoWindow(this, infoWindow);
-		            toggleBounce(this);
-		        });
+		        marker.addListener('click', openInfoWindow);
 
 			    // Two event listeners - one for mouseover, one for mouseout,
 		  		// to change the colors back and forth.
-		        marker.addListener('mouseover', function() {
-			       	this.setIcon(highlightedIcon);
-		        });
-
-		      	marker.addListener('mouseout', function() {
-		        	this.setIcon(defaultIcon);
-		      	});
+		        marker.addListener('mouseover', setHighlightedIcon);
+		      	marker.addListener('mouseout', setDefaultIcon);
 
 			    // set bounds according to suggestedBounds from foursquare data response
 				var suggestedBounds = data.response.suggestedBounds;
-				if (suggestedBounds != undefined) {
+				if (suggestedBounds !== undefined) {
 					bounds = new google.maps.LatLngBounds(
 						new google.maps.LatLng(suggestedBounds.sw.lat, suggestedBounds.sw.lng),
 						new google.maps.LatLng(suggestedBounds.ne.lat, suggestedBounds.ne.lng));
@@ -184,7 +176,7 @@ var AppViewModel = function() {
 			infoWindow.setContent('<div class="error-infowindow">FourSquare Data Not Available. Please try to refresh the page</div>');
 			$('.fourSquareData-Error').text("Failed to load FourSquareData. Please try to refresh the page");
 		});
-	}
+	};
 
 	// Will perform the search when visiting the page
     self.searchVenueLocations();
@@ -192,13 +184,10 @@ var AppViewModel = function() {
 	// This function creates the infowindow when the individual marker is clicked. 
 	function setVenueInfoWindow(marker, infowindow) {
 
-		var contentString = '<div class="venue-infowindow">' + '<div class="venueName">' + marker.name 
-																   + '<span class="venueRating right"><i class="icon-star" aria-hidden="true"> ' + marker.rating + '</i></span></div>'
-																   + '<div class="venueCategories"><i class="icon-tags" aria-hidden="true"></i> ' + marker.categories + '</div>'
-																   + '<div class="venueAddress"><i class="icon-map-marker" aria-hidden="true"></i> ' + marker.address + '</div>'
-																   + '<div class="venuePhone"><i class="icon-phone" aria-hidden="true"></i> ' + marker.phone + '</div>'
-																   + '<div class="venueUrl"><i class="icon-globe" aria-hidden="true"></i> ' + '<a href=' + marker.url + ' target="_blank">' + marker.url + '</a></div>'
-																   + '<br><div id="pano"></div></div>';  
+		var contentString = '<div class="venue-infowindow">' + '<div class="venueName">' + marker.name + '<span class="venueRating right"><i class="icon-star" aria-hidden="true"> ' + marker.rating + '</i></span></div>' +
+							  '<div class="venueCategories"><i class="icon-tags" aria-hidden="true"></i> ' + marker.categories + '</div>' + '<div class="venueAddress"><i class="icon-map-marker" aria-hidden="true"></i> ' + marker.address + '</div>' +
+							  '<div class="venuePhone"><i class="icon-phone" aria-hidden="true"></i> ' + marker.phone + '</div>' + '<div class="venueUrl"><i class="icon-globe" aria-hidden="true"></i> ' + '<a href=' + marker.url + ' target="_blank">' + marker.url + '</a></div>' + '<br><div id="pano"></div></div>';  
+
 		// Check to make sure the infowindow is not already opened on this marker.														   
 		if(infowindow.marker != marker) {
 			infowindow.marker = marker;
@@ -235,7 +224,7 @@ var AppViewModel = function() {
 	              // Will handle all the marker data errors
 				  handleVenueDataError(marker);
 	            }
-	          }
+	          };
 	          // Use streetview service to get the closest streetview image within
 	          // 50 meters of the markers position
 	          streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
@@ -277,7 +266,7 @@ var AppViewModel = function() {
 	// When item is clicked in venues listing, panTo the venue marker on map, display infowindow & togglebounce
     self.panToMarker = function(venue) {
 	   	google.maps.event.trigger(venue.marker,'click');
-	}
+	};
 
 	// Update function for venues list display
 	self.toggleList = function() {
@@ -302,7 +291,7 @@ var AppViewModel = function() {
 
 	// This function will make the marker bounce when you click on them
 	function toggleBounce(marker) {
-       	if (marker.getAnimation() != null) {
+       	if (marker.getAnimation() !== null) {
             marker.setAnimation(null);
         } else {
             marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -336,7 +325,20 @@ var AppViewModel = function() {
     
     }
 
-}	// End of AppViewModel
+	function openInfoWindow() {
+		setVenueInfoWindow(this, infoWindow);
+		toggleBounce(this);
+	}
+
+	function setDefaultIcon() {
+		this.setIcon(defaultIcon);
+	}
+
+	function setHighlightedIcon() {
+		this.setIcon(highlightedIcon);
+	}
+
+};	// End of AppViewModel
 
 // Initialize the map
 function initMap() {
