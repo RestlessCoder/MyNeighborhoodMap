@@ -172,7 +172,7 @@ var AppViewModel = function() {
 
 			} // End for loop
 
-		}).error(function(e) {
+		}).fail(function(e) {
 			infoWindow.setContent('<div class="error-infowindow">FourSquare Data Not Available. Please try to refresh the page</div>');
 			$('.fourSquareData-Error').text("Failed to load FourSquareData. Please try to refresh the page");
 		});
