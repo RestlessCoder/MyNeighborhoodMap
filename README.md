@@ -1,14 +1,10 @@
 ## Neighboorhood Maps (Version 2)
 This is the Udacity Neighborhood Map Project. It was build by using various APIs. This includes Google Maps API and other location-based services like Foursquare API. 
 
-### Installation
-To run the application:
-1. Download the GitHub zip file or clone the repository onto your local workstation:
-    * Zip file - [https://github.com/RestlessCoder/myNeighborhoodMap/archive/master.zip](https://github.com/RestlessCoder/myNeighborhoodMap/archive/master.zip "download zip file")
-    * Git clone - [https://github.com/RestlessCoder/MyNeighborhoodMap.git](https://github.com/RestlessCoder/MyNeighborhoodMap.git "git clone repository")
-2. Open a browser window and navigate to the index.html file in your application's directory.
+## Live Demo
+[Click Here](https://restlesscoder.github.io/MyNeighborhoodMap/) to Watch my Neighboorhod Map.
 
-### About myNeighborhood Maps
+## About myNeighborhood Maps
 My neighborhood map shows places around Belfast, United Kingdom that uses Google Maps & FourSquare API along with some helpers such as Bootstrap, Knockout.js and JQuery. If the user clicks on the marker, an infowindow will pop out showing the information of the place with name, address, phone and so on. 
 
 There are some additional functionality such as search function to discover places to visit and do in Belfast, and a listview that help user to look for the information of the place with ease. The filter function also helps to filter the listview as you type. In return, it displays the place's name that the user are looking for. 
