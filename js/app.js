@@ -97,6 +97,7 @@ var AppViewModel = function() {
 
 		var fourSquareUrl = "https://api.foursquare.com/v2/venues/explore?";
 		var fourSquareID = "client_id=4KRRWLQG1VJMY1GNF2CSWXNSPU5XRED3CFUACY4TOHZ53XOA&client_secret=LP11UFHMDQFYNYMYO42S4BD414ZJJQLMVK2OPNIEF0KIXEIJ&v=20170604";
+		//client_id=4KRRWLQG1VJMY1GNF2CSWXNSPU5XRED3CFUACY4TOHZ53XOA&client_secret=LP11UFHMDQFYNYMYO42S4BD414ZJJQLMVK2OPNIEF0KIXEIJ&v=20170604
 		var limitSearch = "&limit=" + 20;
 		var location = "&near=belfast";
 		var radius = "&radius=" + 600;
